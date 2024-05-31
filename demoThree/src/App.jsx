@@ -1,66 +1,42 @@
-import { useEffect } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Stats from 'three/examples/jsm/libs/stats.module';
+import './App.css';
+import { Canvas, useThree, useFrame } from '@react-three/fiber';
+import { Lightformer, ContactShadows, Environment, OrbitControls } from '@react-three/drei'
+import { Suspense, useRef } from 'react';
+// import Road from '../public/sceneModel/Scene';
+import Car from '../public/Car'
+// import Road from '../public/Road';
+import Road2 from '../public/Road2'
+// import Delorean from '../public/Delorean'
+import { Effects } from './Effects';
 
-
-function App() {
-  useEffect(() => {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      50,
-      window.innerWidth / window.innerHeight,
-      1,
-      1000
-    );
-    camera.position.z = 96;
-
-    const canvas = document.getElementById('myCanvas');
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-    })
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    ambientLight.castShadow = true;
-    scene.add(ambientLight);
-
-    const spotLight = new THREE.SpotLight(0xffffff, 1);
-    spotLight.castShadow = true;
-    spotLight.position.set(0, 64, 32);
-    scene.add(spotLight);
-
-    const boxGeometry = new THREE.BoxGeometry(16, 16, 16);
-    const boxMaterial = new THREE.MeshNormalMaterial();
-    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-    scene.add(boxMesh);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-
-    const stats = Stats();
-    document.body.appendChild(stats.dom);
-
-    const animate = () => {
-      stats.update();
-      controls.update();
-      // boxMesh.rotation.x += 0.01;
-      // boxMesh.rotation.y += 0.01;
-      renderer.render(scene, camera);
-      window.requestAnimationFrame(animate);
-    };
-
-    animate();
-
-  }, [])
-  
+export const App = () => {
   return (
-    <>
-      <canvas id="myCanvas"/>
-    </>
+    <Canvas camera={{position: [0, 10, 0], fov: 10} }>
+      <OrbitControls />
+      
+      {/* <ambientLight intensity={1} /> */}
+      <Suspense fallback={null}>
+        <Car position={[0, 0.25, 0]} scale={0.33} rotation={[0, Math.PI, 0]} />
+        <Road2 />
+        {/* <Delorean /> */}
+        {/* <Road /> */}
+      </Suspense>
+      <Environment resolution={512}>
+        {/* Ceiling */}
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, -9]} scale={[10, 1, 1]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, -6]} scale={[10, 1, 1]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, -3]} scale={[10, 1, 1]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, 0]} scale={[10, 1, 1]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, 3]} scale={[10, 1, 1]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, 6]} scale={[10, 1, 1]} />
+        <Lightformer intensity={2} rotation-x={Math.PI / 2} position={[0, 4, 9]} scale={[10, 1, 1]} />
+        {/* Sides */}
+        <Lightformer intensity={2} rotation-y={Math.PI / 2} position={[-50, 2, 0]} scale={[100, 2, 1]} />
+        <Lightformer intensity={2} rotation-y={-Math.PI / 2} position={[50, 2, 0]} scale={[100, 2, 1]} />
+        {/* Key */}
+        <Lightformer form="ring" color="red" intensity={10} scale={2} position={[10, 5, 10]} onUpdate={(self) => self.lookAt(0, 0, 0)} />
+      </Environment>
+      <Effects />
+    </Canvas>
   )
 }
-
-export default App
