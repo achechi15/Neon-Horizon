@@ -1,38 +1,29 @@
 import './App.css';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Lightformer, ContactShadows, Environment, OrbitControls } from '@react-three/drei'
-import { Suspense, useEffect, useRef, useState } from 'react';
-// import Road from '../public/sceneModel/Scene';
+import { Suspense, useContext, useEffect, useRef, useState } from 'react';
 import Car from '../public/Car'
-// import Road from '../public/Road';
 import Road2 from '../public/Road2'
-// import Delorean from '../public/Delorean'
 import { Effects } from './Effects';
+import { useControl } from './hooks/useControl';
+import { UserContext } from './context/UserContext';
 
 const Player = () => {
   const ref = useRef();
   
-  const [key, setKeyPressed] = useState([])
+  // TODO: Make this a global variable
+  const { handleEventOn, handleEventOff, left, right } = useContext( UserContext);
+
+  console.log(left)
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      setKeyPressed([...key, event.key]);
-      // console.log(`Tecla presionada: ${event.key}`);
-    };
-
-    const handleKeyUp = () => {
-      // console.log(`Tecla soltada: ${key}`);
-      let letra = key[0];
-      setKeyPressed(key.filter( (e) => e !== letra))
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('keydown', handleEventOn);
+    window.addEventListener('keyup', handleEventOff);
 
     // Cleanup
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('keydown', handleEventOn);
+      window.removeEventListener('keyup', handleEventOff);
     };
   });
 
@@ -40,15 +31,12 @@ const Player = () => {
 
   useFrame((state, delta) => {
     // console.log(state);
-    if (key[0] === 'd' && ref.current.position.x <= 1) {
-      // console.log(ref.current.position.x);
+    if (right && ref.current.position.x <= 1) {
       ref.current.position.x += delta*1.25;
     }
-    if (key[0] === 'a' && ref.current.position.x >= -1) {
+    if (left && ref.current.position.x >= -1) {
       ref.current.position.x -= delta*1.25; 
-      // console.log(ref.current.position.x); 
     }
-    // console.log(ref.current.position)
   })
 
   
@@ -68,14 +56,17 @@ export const App = () => {
     state.camera.position.y = 1; 
   }
   
+  const { handleRightOn, handleRightOff, handleLeftOn, handleLeftOff, left, right, setLeft, setRight } = useContext( UserContext);
+
+
   const mediaQuery = window.matchMedia('(max-width: 1024px)')
-  console.log(mediaQuery.matches)
+  // console.log(mediaQuery.matches)
 
   return (
     <>
       <div className='fixed z-40 w-screen flex justify-around bottom-[5rem]'>
-        <button><img src="../public/arrowIcon.svg" alt="left" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl' /></button>
-        <button className='text-white'><img src="../public/arrowIcon.svg" alt="right" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl rotate-180' /></button>
+        <button onTouchStart={handleLeftOn} onTouchEnd={handleLeftOff}><img src="../public/arrowIcon.svg" alt="left" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl' /></button>
+        <button onTouchStart={handleRightOn} onTouchEnd={handleRightOff}><img src="../public/arrowIcon.svg" alt="right" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl rotate-180' /></button>
       </div>
     <Canvas onCreated={setCamera} className='z-0'>
       <Suspense fallback={null}>
@@ -99,7 +90,7 @@ export const App = () => {
       </Environment>
       <Effects />
       {/* <OrbitControls /> */}
-      <axesHelper args={[5]} position={[0, 0.5, 0]}/>
+      {/* <axesHelper args={[5]} position={[0, 0.5, 0]}/> */}
     </Canvas>
     </>
   )
