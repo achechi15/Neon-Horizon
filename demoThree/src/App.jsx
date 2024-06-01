@@ -1,7 +1,7 @@
 import './App.css';
-import { Canvas, useThree, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Lightformer, ContactShadows, Environment, OrbitControls } from '@react-three/drei'
-import { Suspense, useRef } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 // import Road from '../public/sceneModel/Scene';
 import Car from '../public/Car'
 // import Road from '../public/Road';
@@ -9,17 +9,78 @@ import Road2 from '../public/Road2'
 // import Delorean from '../public/Delorean'
 import { Effects } from './Effects';
 
-export const App = () => {
+const Player = () => {
+  const ref = useRef();
+  
+  const [key, setKeyPressed] = useState([])
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      setKeyPressed([...key, event.key]);
+      // console.log(`Tecla presionada: ${event.key}`);
+    };
+
+    const handleKeyUp = () => {
+      // console.log(`Tecla soltada: ${key}`);
+      let letra = key[0];
+      setKeyPressed(key.filter( (e) => e !== letra))
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  });
+
+  // const [isClicked, setIsClicked] = useState(false);
+
+  useFrame((state, delta) => {
+    // console.log(state);
+    if (key[0] === 'd' && ref.current.position.x <= 1) {
+      // console.log(ref.current.position.x);
+      ref.current.position.x += delta*1.25;
+    }
+    if (key[0] === 'a' && ref.current.position.x >= -1) {
+      ref.current.position.x -= delta*1.25; 
+      // console.log(ref.current.position.x); 
+    }
+    // console.log(ref.current.position)
+  })
+
+  
+
   return (
-    <Canvas camera={{position: [0, 10, 0], fov: 10} }>
-      <OrbitControls />
-      
-      {/* <ambientLight intensity={1} /> */}
+    // eslint-disable-next-line react/no-unknown-property
+    <mesh ref={ref} position={[0, 0.25, 0]} scale={0.33} rotation={[0, Math.PI, 0]} >
+      <Car />
+    </mesh>
+  )
+}
+
+export const App = () => {
+  
+  const setCamera = (state) => {
+    state.camera.rotation._y = 100;
+    state.camera.position.y = 1; 
+  }
+  
+  const mediaQuery = window.matchMedia('(max-width: 1024px)')
+  console.log(mediaQuery.matches)
+
+  return (
+    <>
+      <div className='fixed z-40 w-screen flex justify-around bottom-[5rem]'>
+        <button><img src="../public/arrowIcon.svg" alt="left" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl' /></button>
+        <button className='text-white'><img src="../public/arrowIcon.svg" alt="right" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl rotate-180' /></button>
+      </div>
+    <Canvas onCreated={setCamera} className='z-0'>
       <Suspense fallback={null}>
-        <Car position={[0, 0.25, 0]} scale={0.33} rotation={[0, Math.PI, 0]} />
+        <Player />
         <Road2 />
-        {/* <Delorean /> */}
-        {/* <Road /> */}
       </Suspense>
       <Environment resolution={512}>
         {/* Ceiling */}
@@ -37,6 +98,9 @@ export const App = () => {
         <Lightformer form="ring" color="red" intensity={10} scale={2} position={[10, 5, 10]} onUpdate={(self) => self.lookAt(0, 0, 0)} />
       </Environment>
       <Effects />
+      {/* <OrbitControls /> */}
+      <axesHelper args={[5]} position={[0, 0.5, 0]}/>
     </Canvas>
+    </>
   )
 }

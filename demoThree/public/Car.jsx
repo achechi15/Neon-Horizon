@@ -48,7 +48,6 @@ export default function Model(props) {
             <mesh geometry={nodes.Object_29.geometry} material={materials['Material.013']} />
             <mesh geometry={nodes.Object_30.geometry} material={materials['Material.014']} />
           </group>
-          {/* <mesh geometry={nodes.Object_15.geometry} material={materials['Material.012']} position={[0, -1.834, 0]} rotation={[-Math.PI, 0, 0]} scale={[-9.193, 15.784, 15.784]} /> */}
           <mesh geometry={nodes.Object_32.geometry} material={materials.material_0} position={[0, -1.221, 7.167]} rotation={[2.917, 0, -Math.PI]} scale={[-1.091, 0.292, 0.039]} />
           <mesh geometry={nodes.Object_34.geometry} material={materials.material_0} position={[0, -0.465, -7.123]} rotation={[-Math.PI, 0, -Math.PI]} scale={[-1.091, 0.292, 0.039]} />
         </group>
