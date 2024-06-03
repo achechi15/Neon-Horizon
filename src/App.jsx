@@ -2,8 +2,8 @@ import './App.css';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Lightformer, ContactShadows, Environment, OrbitControls } from '@react-three/drei'
 import { Suspense, useContext, useEffect, useRef, useState } from 'react';
-import Car from './models/Car'
-import Road2 from './models/Road2'
+import Car from '/public/Car'
+import Road2 from '/public/Road2'
 import { Effects } from './Effects';
 import { UserContext } from './context/UserContext';
 
