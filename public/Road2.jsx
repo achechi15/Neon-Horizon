@@ -66,6 +66,8 @@ export default function Model(props) {
                       <mesh name="SideSideLeft_Material006_0" geometry={nodes.SideSideLeft_Material006_0.geometry} material={materials['Material.006']} />
                     </group>
                     <mesh name="Road_Material005_0" geometry={nodes.Road_Material005_0.geometry} material={materials['Material.005']} />
+                    {/* <mesh name="Road_Material005_0" position={[0.5, 0, 0]} geometry={nodes.Road_Material005_0.geometry} material={materials['Material.005']} /> */}
+                    {/* <mesh name="Road_Material005_0" position={[-0.25, 0, 0]} geometry={nodes.Road_Material005_0.geometry} material={materials['Material.005']} /> */}
                   </group>
                   <group name="PalmTree_Left001" position={[7.236, 0, 0]} scale={0.6}>
                     <group name="PalmTreeTopLeft001" position={[1.944, 0, 14.65]} scale={0.572}>

@@ -6,6 +6,7 @@ import Car from '/public/Car'
 import Road2 from '/public/Road2'
 import { Effects } from './Effects';
 import { UserContext } from './context/UserContext';
+import { MobileControlls } from './components/MobileControlls';
 
 const Player = () => {
   const ref = useRef();
@@ -30,11 +31,18 @@ const Player = () => {
 
   useFrame((state, delta) => {
     // console.log(state);
+    const speed = 8;
     if (right && ref.current.position.x <= 1) {
-      ref.current.position.x += delta*1.25;
+      ref.current.position.x += delta*speed;
+      ref.current.rotation.y -= delta*4; 
+      // ref.current.rotation._z += delta;
     }
-    if (left && ref.current.position.x >= -1) {
-      ref.current.position.x -= delta*1.25; 
+    else if (left && ref.current.position.x >= -1) {
+      ref.current.position.x -= delta*speed;
+      ref.current.rotation.y += delta*4;  
+    }
+    else {
+      ref.current.rotation.y = Math.PI;
     }
   })
 
@@ -51,8 +59,10 @@ const Player = () => {
 export const App = () => {
   
   const setCamera = (state) => {
-    state.camera.rotation._y = 100;
-    state.camera.position.y = 1; 
+    state.camera.rotation._y = 120;
+    state.camera.position.y = 2;
+    state.camera.fov = 60;
+    console.log(state.camera)
   }
   
   const { handleRightOn, handleRightOff, handleLeftOn, handleLeftOff, left, right, setLeft, setRight } = useContext( UserContext);
@@ -60,13 +70,14 @@ export const App = () => {
 
   const mediaQuery = window.matchMedia('(max-width: 1024px)')
   // console.log(mediaQuery.matches)
+  const boolean = !!mediaQuery.matches;
+  console.log(boolean)
+  // console.log(mediaQuery.matches)
 
   return (
     <>
-      <div className='fixed z-40 w-screen flex justify-around bottom-[5rem]'>
-        <button onTouchStart={handleLeftOn} onTouchEnd={handleLeftOff}><img src="../public/arrowIcon.svg" alt="left" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl' /></button>
-        <button onTouchStart={handleRightOn} onTouchEnd={handleRightOff}><img src="../public/arrowIcon.svg" alt="right" className='object-cover h-[8rem] w-[8rem] drop-shadow-xl rotate-180' /></button>
-      </div>
+
+      { boolean ? <MobileControlls value={handleLeftOff, handleLeftOn, handleRightOff, handleRightOn}/> : null}
     <Canvas onCreated={setCamera} className='z-0'>
       <Suspense fallback={null}>
         <Player />
@@ -88,7 +99,7 @@ export const App = () => {
         <Lightformer form="ring" color="red" intensity={10} scale={2} position={[10, 5, 10]} onUpdate={(self) => self.lookAt(0, 0, 0)} />
       </Environment>
       <Effects />
-      {/* <OrbitControls /> */}
+      <OrbitControls />
       {/* <axesHelper args={[5]} position={[0, 0.5, 0]}/> */}
     </Canvas>
     </>
