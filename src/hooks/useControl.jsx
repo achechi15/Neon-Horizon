@@ -7,13 +7,13 @@ export const useControl = () => {
     const [right, setRight] = useState(false);
     
     const handleEventOn = (event) => {
-        if (event.key === 'a') handleLeftOn();
-        if (event.key === 'd') handleRightOn();
+        if (event.key === 'a' || event.key === 'ArrowLeft') handleLeftOn();
+        if (event.key === 'd' || event.key === 'ArrowRight') handleRightOn();
     }
 
     const handleEventOff = (event) => {
-        if (event.key === 'a') handleLeftOff();
-        if (event.key === 'd') handleRightOff();
+        if (event.key === 'a' || event.key === 'ArrowLeft') handleLeftOff();
+        if (event.key === 'd' || event.key === 'ArrowRight') handleRightOff();
     }
 
     const handleLeftOn = () => {

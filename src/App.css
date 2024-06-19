@@ -1,14 +1,38 @@
 #root {
+    margin: 0;
     user-select: none;
     width: 100vw;
     height: 100vh;
     /* background-image: linear-gradient(to top, #0f0209, #23061d, #330531, #3e024b, #41056a, #520578, #640385, #770092, #9b0089, #b8007e, #ce1173, #e03168); */
     background-color: #000000;
-    overflow: hidden;
+    overflow-y: hidden;
+    -webkit-touch-callout: none !important;
+    position: fixed;
+}
+
+
+img {
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
 }
 
 h1 {
     font-family: "Press Start 2P", system-ui;
     font-weight: 400;
     font-style: normal;
+    color: #ffffff;
+}
+
+h2 {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    color: #ffffff;
+}
+
+p {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 50;
+    font-style: normal;
+    font-size: 0.75rem;
 }
