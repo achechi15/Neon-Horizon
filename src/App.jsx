@@ -1,13 +1,9 @@
 import './App.css';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { UserContext } from './context/UserContext';
-import { MobileControlls } from './components/MobileControlls';
-import { Scene } from './components/Scene';
-import { LosePage } from './components/LosePage';
-import { HomePage } from './components/HomePage';
-import { GamePage } from './components/GamePage';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { HomePage } from './pages/HomePage';
+import { GamePage } from './pages/GamePage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 export const App = () => {

@@ -4,10 +4,10 @@ import { UserContext } from '../context/UserContext'
 
 export default function Model(props) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('./road2.gltf')
+  const { nodes, materials, animations } = useGLTF('/road2.gltf')
   const { actions, names, mixer } = useAnimations(animations, group)
   const { inGame, speedAnimation } = useContext( UserContext );
-  mixer.timeScale = speedAnimation;
+  mixer.timeScale = speedAnimation.current;
   useEffect(() => {
     if (inGame) {
       actions[names[0]].reset().play();

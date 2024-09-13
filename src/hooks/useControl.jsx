@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 
 export const useControl = () => {
     
-    const [left, setLeft] = useState(false);
-    const [right, setRight] = useState(false);
+    // const [left, setLeft] = useState(false);
+    // const [right, setRight] = useState(false);
     
+    const left = useRef(false);
+    const right = useRef(false);
+
     const handleEventOn = (event) => {
         if (event.key === 'a' || event.key === 'ArrowLeft') handleLeftOn();
         if (event.key === 'd' || event.key === 'ArrowRight') handleRightOn();
@@ -17,19 +20,19 @@ export const useControl = () => {
     }
 
     const handleLeftOn = () => {
-        setLeft(true);
+        left.current = true;
     }
     
     const handleLeftOff = () => {   
-        setLeft(false);
+        left.current = false;
     }
 
     const handleRightOn = () => {
-        setRight(true);
+        right.current = true;
     }
 
     const handleRightOff = () => {
-        setRight(false);
+        right.current = false;
     }
 
     return {
@@ -41,7 +44,7 @@ export const useControl = () => {
         handleRightOff, 
         left,
         right,
-        setLeft,
-        setRight,
+        // setLeft,
+        // setRight,
     }
 }

@@ -6,7 +6,7 @@ import Car from '../models/Car'
 
 export const Player = () => {
     const car = useRef();
-    const { handleEventOn, handleEventOff, left, right, setScore, setPlayerRef, inGame } = useContext( UserContext);
+    const { handleEventOn, handleEventOff, left, right, setScore, playerRef, inGame } = useContext( UserContext);
     useEffect(() => {
         window.addEventListener('keydown', handleEventOn);
         window.addEventListener('keyup', handleEventOff);
@@ -21,12 +21,12 @@ export const Player = () => {
         const speed = 4;
         if (inGame) {
             setScore( prev => prev+speed/4);
-            setPlayerRef(car);
+            playerRef.current = car.current;
         }
-        if (right && car.current.position.x <= 1) {
+        if (right.current && car.current.position.x <= 1) {
             car.current.position.x += delta*speed;
         }
-        else if (left && car.current.position.x >= -1) {
+        else if (left.current && car.current.position.x >= -1) {
             car.current.position.x -= delta*speed; 
         }
     })

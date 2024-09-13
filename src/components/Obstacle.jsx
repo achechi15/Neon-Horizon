@@ -9,7 +9,7 @@ export const Obstacle = () => {
     const getRandomNumber = (min, max) => {
         return Math.random() * (max - min) + min;
     }
-    const { inGame, setObstacleRef } = useContext( UserContext );
+    const { inGame, obstacleRef } = useContext( UserContext );
     let speed = getRandomNumber(20, 40);
     useFrame((state, delta) => {
         if (inGame) {
@@ -17,7 +17,7 @@ export const Obstacle = () => {
             obstacle.current.rotation.x += delta;
             obstacle.current.rotation.y += delta;
             
-            setObstacleRef(obstacle)
+            obstacleRef.current = obstacle.current;
     
             if (obstacle.current.position.z > OFFSET) {
                 // console.log(speed);
